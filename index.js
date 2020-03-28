@@ -5,14 +5,6 @@ const express = require('express'),
     cors = require('cors'),
     dbConfig = require('./db/database');
 
-//Setting up Express
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: false
-}))
-
 //Connecting MongoDB
 mongoose.Promise = global.Promise;
 mongoose.connect(dbConfig.db, {
@@ -27,9 +19,17 @@ mongoose.connect(dbConfig.db, {
     }
 )
 
+//Setting up Express
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: false
+}))
+app.use(cors());
+
 //Connecting Port
 const port = process.env.PORT || 4000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log('Port connected to : ' + port);
 })
 
@@ -38,8 +38,6 @@ const authRouting = require('./modules/user/user.route')
 app.use('/user', authRouting);
 const billingRoute = require('./modules/bill/bill.route')
 app.use('/bill', billingRoute);
-const inventoryRoute = require('./modules/inventory/inventory.route')
-app.use('/inventory', inventoryRoute);
 const productRoute = require('./modules/product/product.route')
 app.use('/product', productRoute);
 const categoryRoute = require('./modules/category/category.route')

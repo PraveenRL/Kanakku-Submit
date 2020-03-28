@@ -5,7 +5,7 @@ var create = function(req,res){
     categorySchema.countDocuments({product_name : req.body.product_name}, (err,count) => {
         if(err) throw err;
         else if (count > 0) {
-            res.send('Product Already Added');
+            res.send('Category Already Added');
             console.log(count)
         }
         else {
@@ -42,8 +42,28 @@ var listid = function (req, res) {
     })
 }
 
+var edit = function (req, res) {
+    categorySchema.findByIdAndUpdate(req.params.id, { $set: req.body }, (err, data) => {
+        if (err) throw err;
+        res.json(data);
+        console.log("Updated " + data)
+    })
+}
+
+var removeCategory = function (req, res) {
+    categorySchema.findByIdAndRemove(req.params.id, (err, data) => {
+        if (err) throw err;
+        res.status(200).json({
+            msg: data
+        })
+        console.log(data + "Deleted")
+    })
+}
+
 module.exports = {
     create:create,
     list:list,
     listid:listid,
+    edit:edit,
+    removeCategory:removeCategory,
 }

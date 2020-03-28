@@ -6,7 +6,7 @@ const categoryRoute = express.Router();
 categoryRoute.route('/create').post(authorize,categorycontroller.create);
 categoryRoute.route('/list').get(categorycontroller.list);
 categoryRoute.route('/list/:id').get(authorize,categorycontroller.listid);
-// categoryRoute.route('/edit/:id').put(authorize,categorycontroller.edit);
-// categoryRoute.route('/delete/:id').delete(authorize,categorycontroller.remove);
+categoryRoute.route('/edit/:id').put(authorize,categorycontroller.edit);
+categoryRoute.route('/delete/:id').delete(authorize,categorycontroller.removeCategory);
 
 module.exports = categoryRoute;

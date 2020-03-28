@@ -2,7 +2,6 @@ let SignSchema = require('./user.model');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const jwtDecode = require('jwt-decode');
-const _ = require('lodash');
 
 var signUp = function (req, res) {
     SignSchema.countDocuments({ store_name: req.body.store_name }, (err, count) => {
@@ -27,7 +26,7 @@ var signUp = function (req, res) {
                 user.save().then((response) => {
                     res.status(200).json({
                         message: 'User Saved',
-                        result: true
+                        result: response
                     });
                     console.log(response);
                 }).catch(err => {
@@ -80,7 +79,7 @@ var login = function (req, res, next) {
 var access = function (req, res) {
     SignSchema.findById(req.params.id, (err, data) => {
         if (err) throw err;
-        res.status(200).send(true);
+        res.status(200).send(data);
         console.log(data + "\nSignIn Successfully")
     })
 }
@@ -93,17 +92,7 @@ var get = function (req, res) {
         if (error) {
             return next(error)
         } else {
-            return res.status(200).json([{
-                _id: data[0]._id,
-                reporting_billers: [],
-                name: data[0].name,
-                store_name: data[0].store_name,
-                phone: data[0].phone,
-                landline: data[0].landline,
-                address: data[0].address,
-                pan: data[0].pan,
-                gst: data[0].gst
-            }])
+            res.json(data)
         }
     })
 }

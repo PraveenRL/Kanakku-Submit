@@ -4,15 +4,19 @@ const jwtDecode = require('jwt-decode');
 var create = function (req, res) {
     productSchema.countDocuments({ product_name: req.body.product_name }, (err, count) => {
         if (err) throw err;
-        else if (count > 0) {
+         else if (count > 0) {
+            res.send('Product Already Added');
             console.log(count)
-            const filter = { product_name: req.body.product_name };
-            const update = { mrp: req.body.mrp, retail_price: req.body.retail_price }
-            productSchema.findOneAndUpdate(filter, update, {new: true}, (err, data) => {
-                if (err) throw err;
-                res.send(data);
-            })
         }
+        // else if (count > 0) {
+        //     console.log(count)
+        //     const filter = { product_name: req.body.product_name };
+        //     const update = { mrp: req.body.mrp, retail_price: req.body.retail_price }
+        //     productSchema.findOneAndUpdate(filter, update, {new: true}, (err, data) => {
+        //         if (err) throw err;
+        //         res.send(data);
+        //     })
+        // }
         else {
             let token = req.headers.authorization;
             var decoded = jwtDecode(token);                 //Decode jwt
